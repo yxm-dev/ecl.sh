@@ -1,0 +1,16 @@
+#! /bin/bash
+
+     function wf(){
+        if [[ $1 == "-c" ]] || [[ -z $1 ]]; then
+            sudo nmcli device wifi rescan
+            sudo nmcli device wifi list
+            read -e -r -p "Enter the SSID or BSSID to connect: " name
+            nmcli --ask device wifi connect $name
+        elif [[ $1 == "-p" ]] || [[ $1 == "--ping" ]]; then
+            ping -c 4 archlinux.org
+        else
+            printf "Option not defined for function \"wf\"."
+        fi
+    }
+    alias wifi="wf"
+

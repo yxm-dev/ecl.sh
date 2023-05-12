@@ -1,0 +1,5 @@
+#! /bin/bash
+
+function rn(){
+    mv $1 $PWD/$2 
+}
