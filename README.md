@@ -1,4 +1,5 @@
-`ecl.sh` is a collection of pure shell scripts and bash functions aimed to make command line easier. It includes:
+[ecl.sh](https://github.com/yxm-dev/ecl.sh) is a collection of pure shell scripts and bash functions aimed to
+make command line easier. It includes:
 
 * quickly navigation with "`.`", "`..`" and "`~`"
 * unified function `mk` that creates files, directories or symbolic links
