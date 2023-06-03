@@ -4,12 +4,48 @@
 ## "mk -d" to make a dir. "mk -f" to make a file.
     function mk(){
         if [[ "$1" == "-f" || "$1" == "--file" ]]; then
-            if [ -n $2 ]; then
-                touch $2
+            if [[ -n "$2" ]]; then
+                if [[ -d "$2" ]]; then
+                    path=${2%/*}
+                    if [[ "$path" == "$2" ]]; then
+                        path=${PWD##*/}
+                    fi
+                    name=${2##*/}
+                    echo "In the directory \"$path/\" there already exists a directory with name \"$name\"."
+                elif [[ -f "$2" ]]; then
+                    path=${2%/*}
+                    if [[ "$path" == "$2" ]]; then
+                        path=${PWD##*/}
+                    fi
+                    name=${2##*/}
+                    echo "In the directory \"$path/\" there already exists a file with name \"$name\"."
+                else
+                     touch $2
+                fi
+            else
+                echo "Please, enter a file name."
             fi
         elif [[ "$1" = "-d" || "$1" = "--dir" ]]; then
-            if [ -n $2 ]; then
-                mkdir -p $2
+            if [[ -n "$2" ]]; then
+                if [[ -f "$2" ]]; then
+                    path=${2%/*}
+                    if [[ "$path" == "$2" ]]; then
+                        path=${PWD##*/}
+                    fi
+                    name=${2##*/}
+                    echo "In the directory \"$path/\" there already exists a file with name \"$name\"."
+                elif [[ -d "$2" ]]; then
+                    path=${2%/*}
+                    if [[ "$path" == "$2" ]]; then
+                        path=${PWD##*/}
+                    fi
+                    name=${2##*/}
+                    echo "In the directory \"$path/\" there already exists a directory with name \"$name\"."
+                else
+                     mkdir $2
+                fi
+            else
+                echo "Please, enter a directory name."
             fi
         elif [[ "$1" = "-l" || "$1" = "--link" ]]; then
             if [ -n $2 ] || [ -n $3 ]; then
