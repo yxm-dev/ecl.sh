@@ -99,6 +99,13 @@
 ## aliases
     alias d="del"
     alias D="Del"
+<<<<<<< HEAD
 ## "Dy" to remove without confirming
     alias Dy="yes | D"
 
+=======
+    alias dh="d -h"
+## "Dy" or DD to remove without confirming
+    alias Dy="yes | D"
+    alias DD="Dy"
+>>>>>>> 5293b5b (...)

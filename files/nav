@@ -25,6 +25,10 @@
     alias ~="cd ~/ && ls"
 ## move to parent dirs with multiple dots
     alias ..=" cd .. && ls"
+<<<<<<< HEAD
     alias ...=" cd .. && .. "
     alias ....=" cd .. && cd .. && .."
+=======
+    alias ...=" cd -"
+>>>>>>> 5293b5b (...)
 
