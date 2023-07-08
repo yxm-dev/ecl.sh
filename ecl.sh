@@ -1,12 +1,13 @@
 #! /bin/bash
 
-installdir="$HOME/.config/ecl.sh"
+ECL_install_dir="$HOME/.config/ecl.sh"
 
-source $installdir/files/nav
-source $installdir/files/cp
-source $installdir/files/rn
-source $installdir/files/mk
-source $installdir/files/del
-source $installdir/files/bkl
-source $installdir/files/vl
-source $installdir/files/wf
+source $ECL_install_dir/files/nav
+source $ECL_install_dir/files/cp
+source $ECL_install_dir/files/rn
+source $ECL_install_dir/files/mk
+source $ECL_install_dir/files/del
+source $ECL_install_dir/files/bkl
+source $ECL_install_dir/files/vl
+source $ECL_install_dir/files/wf
+source $ECL_install_dir/files/zp

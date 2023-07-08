@@ -1,0 +1,39 @@
+#! /bin/bash
+
+function zp(){
+    filename=${1%.*}
+    ext=${1##*.}
+    if [[ "$ext" == "zip" ]] && [[ -n "$filename" ]]; then
+        echo "Extracting \"$1\"..."
+        unzip $1
+        echo "Done!"
+    elif [[ "$ext" == "gz" ]] && [[ -n "$filename" ]]; then
+        echo "Extracting \"$1\"..."
+        tar -xzf $1
+        echo "Done!"
+    elif ([[ "$1" == "-t" ]] || 
+          [[ "$1" == "--tar" ]]) &&
+          [[ -z "$2" ]]; then
+        echo "Compressing \"$PWD\"..."
+        working_dir=${PWD##*/}
+        tar -czf ${working_dir}.tar.gz .
+        echo "Done!"
+    elif ([[ "$1" == "-t" ]] || 
+          [[ "$1" == "--tar" ]]) &&
+          ([[ -d "$2" ]] || [[ -f "$2" ]]) &&
+          [[ -z $3 ]]; then
+        echo "Compressing \"$2\"..."
+        tar -czf $2.tar.gz $2
+        echo "Done!"
+    elif [[ -z "$1" ]]; then
+        echo "Compressing \"$PWD\"..."
+        working_dir=${PWD##*/}
+        zip -r ${working_dir}.zip .
+        echo "Done!"
+    elif ([[ -d "$1" ]] || [[ -f "$1" ]]) &&
+         [[ -z "$2" ]]; then
+        echo "Compressing \"$1\"..."
+        zip -r $1.zip $1
+        echo "Done!"
+    fi
+}
