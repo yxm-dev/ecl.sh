@@ -1,0 +1,122 @@
+#! /bin/bash/
+
+# "DEL FUNCTIONS
+    function del() {
+## Auxiliary Functions
+        function DEL_basic(){
+            mv --backup=numbered "$1" ~/.trash/
+            echo "Selected files has been moved to trash."
+            echo "Type \"del --revert\" to revert it." 
+        }
+        function DEL_clean(){
+            mv -i --backup=numbered $1/* ~/.trash/
+            ls
+            echo "Directory \"$1\" was cleaned."
+            echo "Type \"del --revert\" to revert it."  
+        }
+        function DEL_clean_hidden(){
+            shopt -s dotglob
+            mv -i --backup=numbered $1/* ~/.trash/
+            ls
+            echo "Directory \"$1\" (including hidden files) was cleaned."
+            echo "Type \"del --revert\" to revert it."
+        }
+        function DEL_files(){
+            mapfile -d '' files < <(find $1 -maxdepth 1 -type f -print0)
+            for file in ${files[@]}; do
+                mv --backup=numbered $file ~/.trash/
+            done
+            echo "Files in \"$1\" has been moved to trash."
+            echo "Type \"del --revert\" to revert it."
+        }
+        function DEL_dirs(){
+            mapfile -d '' dirs < <(find $1 -maxdepth 1 -type d -print0)
+            for file in ${files[@]}; do
+                mv --backup=numbered $file ~/.trash/
+            done
+            echo "Directories in \"$1\" has been moved to trash."
+            echo "Type \"del --revert\" to revert it."
+        }
+
+## DEL Function Properly
+        if  [[ -z "$1" ]]; then
+            echo "printing help..."
+        elif [[ "$1" == "-h" ]] || [[ "$2" == "--help" ]]; then
+            echo "printing help"
+        elif [[ -d "$1" ]] || [[ -f "$1" ]]; then
+            DEL_basic "$1"
+        elif [[ "$1" == "-c" ]] || [[ "$1" == "-cl" ]] || [[ "$1" == "--clean" ]]; then
+            if [[ -z "$2" ]]; then
+                DEL_clean $PWD
+            elif [[ "$2" == "-h" ]] || [[ $2 == "--hidden" ]]; then
+                DEL_clean_hidden $PWD
+            elif [[ -d "$2" ]]; then
+                DEL_clean $2
+            elif [[ -f "$2" ]]; then
+                DEL_basic $2
+            else
+                echo "Directory not identified."
+            fi
+        elif [[ "$1" == "-ch" ]] || [[ "$1" == "-clh" ]] || [[ "$1" == "--clean-hidden" ]]; then
+            if [[ -z "$2" ]]; then
+                DEL_clean_hidden $PWD
+            elif [[ -d "$2" ]]; then
+                DEL_clean $2
+            elif [[ -f "$2" ]]; then
+                DEL_basic $2
+            else
+                echo "Directory not identified."
+            fi
+        elif [[ "$1" == "-f" ]] || [[ "$1" == "--files" ]]; then
+            if [[ -z "$2" ]]; then
+                pwd=$(echo ".")
+                eval "DEL_files $pwd"
+            elif [[ -d "$2" ]]; then
+                DEL_files $2
+            elif [[ -f "$2" ]]; then
+                DEL_basic $2
+            else
+                echo "Directory not identified."
+            fi
+        elif [[ "$1" == "-d" ]] || [[ "$1" == "--dirs" ]]; then
+            if [[ -z "$2" ]]; then
+                pwd=$(echo ".")
+                eval "DEL_files $pwd"
+            elif [[ -d "$2" ]]; then
+                DEL_dirs $2
+            elif [[ -f "$2" ]]; then
+                DEL_basic $2
+            else
+                echo "Directory not identified."
+            fi
+        elif [[ "$1" == "-r" ]] || [[ "$1" == "--reverse" ]]; then
+            "reversing..."
+        else
+            echo "Option not defined for the \"del()\" function."
+        fi
+}
+
+## defining "Del" function
+    function Del() {
+    if [[ -n $1 ]]; then
+        printf "You are trying to delete files permanently.\nAre you sure? (y/n)\n"
+        read x
+        if [[ "$x" == "y" || "$x" == "yes" ]]; then
+            sudo rm -r $@
+        elif [[ "$x" == "n" || "$x" == "no" ]]; then
+            return
+        else
+            echo "invalid option."
+        fi
+    else
+       return
+    fi
+    }
+
+## aliases
+    alias d="del"
+    alias D="Del"
+    alias dh="d -h"
+## "Dy" or DD to remove without confirming
+    alias Dy="yes | D"
+    alias DD="Dy"

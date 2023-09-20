@@ -1,0 +1,39 @@
+#! /bin/bash
+
+ECL_install_dir=$HOME/.config/ecl.sh
+
+source $ECL_install_dir/config/cfile
+
+# Fast navigation with "."
+## use ". file" or ". $i"  to open the ith file 
+    function .() {
+        for i in ${!ECL_nav[@]}; do
+            ext=${1##*.}
+            if  [[ "$i" == "$ext" ]]; then
+                eval "${ECL_nav[$i]} $1"
+            elif [[ -z $1 ]]; then
+                ls --color=auto --group-directories-first
+                break
+            elif [ -d "$1" ]; then 
+                cd $1 && ls --color=auto --group-directories-first
+                break
+            elif [[ "$1" =~ ^[0-9]+$ ]]; then
+                arr=($PWD/*)
+                x=$(($1-1))
+                . ${arr[$x]}
+                break
+            else
+                eval "$ECL_nav_text_editor $1"
+                break
+            fi
+        done
+    }
+## list hidden files with ".," or ",."
+    alias ,.="ls -a"
+    alias .,="ls -a"
+## use "~" to move to $HOME and list files
+    alias ~="cd ~/ && ls"
+## move to parent dirs with multiple dots
+    alias ..=" cd .. && ls"
+    alias ...=" cd -"
+

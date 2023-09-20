@@ -1,0 +1,28 @@
+#! /bin/bash
+
+function iso(){
+    if ([[ "$1" == "-f" ]] || [[ "$1" == "--from" ]]) &&
+       ([[ "$3" == "-t" ]] || [[ "$3" == "--to" ]]); then
+        ext_2=${2##*.}
+        sdx_4=${4%/*}
+        ext_4=${4##*.}
+        if [[ "$ext" == "iso" ]] && [[ "$sdx" == "/dev" ]]; then
+            echo "You will write the .iso file \"$2\" in \"$4\". Are you sure?"
+            echo "y/n"
+            mountpoint=$(df -P "$4" | awk 'NR==2 {print $6}')
+            if [[ -n "$mountpoint" ]]; then
+                umount $mountpoint
+            fi
+            exec dd if=$2 of=$4 bs=4M conv=fdatasyn status=progress
+        elif [[ -d "$2" ]] && [[ "$ext_4" == "iso" ]]; then
+            echo "Creating \"$4\" from the directory \"$2\"..."
+             mkisofs -o $4 $2
+        fi
+    elif [[ "$1" == "-l" ]] || [[ "$1" == "--list" ]]; then
+        echo "The following is the list of USB flash drives with their sizes and mountpoints:"
+        lsblk --output NAME,SIZE,TRAN --nodeps | awk '$3=="usb"{print}'  
+        echo ""
+        echo "The following is the list of .iso files inside your working directory:"
+        find . -type f -name "*.iso"
+     fi
+}

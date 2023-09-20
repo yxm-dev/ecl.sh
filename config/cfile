@@ -1,0 +1,18 @@
+#! /bin/bash
+
+declare -A ECL_nav
+
+ECL_nav_text_editor="vim"
+
+ECL_nav[pdf]="zathura"
+ECL_nav[djvu]="zathura"
+ECL_nav[epub]="zathura"
+ECL_nav[md]="vim"
+ECL_nav[markdown]="vim"
+ECL_nav[tex]="vim"
+ECL_nav[py]="vim"
+ECL_nav[go]="vim"
+ECL_nav[jpg]="display"
+ECL_nav[jpeg]="display"
+ECL_nav[gif]="display"
+ECL_nav[png]="display"

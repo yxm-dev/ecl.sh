@@ -1,0 +1,62 @@
+#! /bin/bash
+
+function zp(){
+    filename_1=${1%.*}
+    ext_1=${1##*.}
+    dirname_1=${1%/*}
+    filename_2=${2%.*}
+    ext_2=${2##*.}
+    dirname_2=${2%/*}
+    working_dir=${PWD##*/}
+    if [[ "${ext_1}" == "zip" ]] && [[ -n "${filename_1}" ]]; then
+        echo "Extracting \"$1\"..."
+        unzip $1
+        echo "Done!"
+    elif [[ "${ext_1}" == "gz" ]] && [[ -n "${filename_1}" ]]; then
+        echo "Extracting \"$1\"..."
+        tar -xzf $1
+        echo "Done!"
+    elif ([[ "$1" == "-t" ]] ||
+          [[ "$1" == "--tar" ]]) &&
+          [[ "$ext_2" == "gz" ]] && 
+          [[ -n "${filename_2}" ]]; then
+        echo "Extracting \"$2\"..."
+        tar -xzf $2
+        echo "Done!"
+    elif ([[ "$1" == "-t" ]] || 
+          [[ "$1" == "--tar" ]]) &&
+          [[ -z "$2" ]]; then
+        echo "Compressing \"${working_dir}\"..."
+        tar -czf ${working_dir}.tar.gz .
+        echo "Done!"
+    elif ([[ "$1" == "-t" ]] || 
+          [[ "$1" == "--tar" ]]) &&
+          [[ -d "$2" ]] &&
+          [[ -z $3 ]]; then
+        echo "Compressing \"$2\"..."
+        tar -czf ${dirname_2}.tar.gz $2
+        echo "Done!"
+    elif ([[ "$1" == "-t" ]] ||
+          [[ "$1" == "--tar" ]]) &&
+          [[ -f "$2" ]] &&
+          [[ -z $3 ]]; then
+        echo "Compressing \"$2\"..."
+        tar -czf ${filename_2}.tar.gz $2
+        echo "Done!"
+    elif [[ -z "$1" ]]; then
+        echo "Compressing \"${working_dir}\"..."}
+        zip -r ${working_dir}.zip .
+        echo "Done!"
+    elif [[ -d "$1" ]] && [[ -z "$2" ]]; then
+        echo "Compressing \"${dirname_1}\"..."
+        zip -r ${dirname_1}.zip $1
+        echo "Done!"
+    elif [[ -f "$1" ]] && [[ -z "$2" ]]; then
+        echo "Compressing \"${filename_1}\"..."
+        zip -r ${filename_1}.zip $1
+        echo "Done!"
+    fi
+}
+
+alias zpt="zp -t"
+alias zt="zpt"

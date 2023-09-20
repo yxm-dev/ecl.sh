@@ -1,0 +1,70 @@
+#! /bin/bash
+
+# "mk" function.
+## "mk -d" to make a dir. "mk -f" to make a file.
+    function mk(){
+        if [[ "$1" == "-f" || "$1" == "--file" ]]; then
+            if [[ -n "$2" ]]; then
+                if [[ -d "$2" ]]; then
+                    path=${2%/*}
+                    if [[ "$path" == "$2" ]]; then
+                        path=${PWD##*/}
+                    fi
+                    name=${2##*/}
+                    echo "In the directory \"$path/\" there already exists a directory with name \"$name\"."
+                elif [[ -f "$2" ]]; then
+                    path=${2%/*}
+                    if [[ "$path" == "$2" ]]; then
+                        path=${PWD##*/}
+                    fi
+                    name=${2##*/}
+                    echo "In the directory \"$path/\" there already exists a file with name \"$name\"."
+                else
+                     touch $2
+                fi
+            else
+                echo "Please, enter a file name."
+            fi
+        elif [[ "$1" = "-d" || "$1" = "--dir" ]]; then
+            if [[ -n "$2" ]]; then
+                if [[ -f "$2" ]]; then
+                    path=${2%/*}
+                    if [[ "$path" == "$2" ]]; then
+                        path=${PWD##*/}
+                    fi
+                    name=${2##*/}
+                    echo "In the directory \"$path/\" there already exists a file with name \"$name\"."
+                elif [[ -d "$2" ]]; then
+                    path=${2%/*}
+                    if [[ "$path" == "$2" ]]; then
+                        path=${PWD##*/}
+                    fi
+                    name=${2##*/}
+                    echo "In the directory \"$path/\" there already exists a directory with name \"$name\"."
+                else
+                     mkdir $2
+                fi
+            else
+                echo "Please, enter a directory name."
+            fi
+        elif [[ "$1" = "-l" || "$1" = "--link" ]]; then
+            if [ -n $2 ] || [ -n $3 ]; then
+                ln -s $2 $3
+            fi
+        else
+            echo "Option not defined for the \"mk\" function. Try:  
+    * \"mk -f\" for files;  
+    * \"mk -d\" for directories;
+    * \"mk -l\" for symbolic links."
+
+        fi
+    }
+
+## aliases
+    alias mkf="mk -f"
+    alias mkd="mk -d"
+    alias mkl="mk -l"
+    alias .f="mkf"
+    alias .d="mkd"
+    alias .l="mkl"
+
