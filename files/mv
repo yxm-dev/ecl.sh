@@ -1,0 +1,26 @@
+#! /bin/bash
+
+function mv(){
+    for i in {1..5}; do
+        dots[1]="../"
+        next=$((( $i+1 )))
+        dots[$next]="../${dots[$i]}"
+    done
+    if [[ "${dots[@]}" =~ "$2" ]] ||
+       [[ "$2" == "." ]] || [[ "$2" == "./" ]] ||
+       [[ "$2" == ".." ]]; then
+        command mv $1 $2 > /dev/null
+    elif [[ "$2" == "..." ]]; then
+        previous_dir=$(cd - > /dev/null)
+        command mv $1 $previous_dir > /dev/null
+    elif [[ ! -f "$2" ]] && [[ ! -d "$2" ]]; then
+        mkdir -p $2 > /dev/null
+        command mv $1/* $2 > /dev/null
+    else
+        command mv $1 $2 > /dev/null
+    fi
+}
+
+function rn(){
+    mv $1 $PWD/$2
+}

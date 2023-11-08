@@ -4,7 +4,7 @@
     function del() {
 ## Auxiliary Functions
         function DEL_basic(){
-            mv --backup=numbered "$1" ~/.trash/
+            command mv --backup=numbered "$1" ~/.trash/
             echo "Selected files has been moved to trash."
             echo "Type \"del --revert\" to revert it." 
         }
@@ -16,7 +16,7 @@
         }
         function DEL_clean_hidden(){
             shopt -s dotglob
-            mv -i --backup=numbered $1/* ~/.trash/
+            command mv -i --backup=numbered $1/* ~/.trash/
             ls
             echo "Directory \"$1\" (including hidden files) was cleaned."
             echo "Type \"del --revert\" to revert it."
@@ -24,7 +24,7 @@
         function DEL_files(){
             mapfile -d '' files < <(find $1 -maxdepth 1 -type f -print0)
             for file in ${files[@]}; do
-                mv --backup=numbered $file ~/.trash/
+                command mv --backup=numbered $file ~/.trash/
             done
             echo "Files in \"$1\" has been moved to trash."
             echo "Type \"del --revert\" to revert it."
@@ -32,7 +32,7 @@
         function DEL_dirs(){
             mapfile -d '' dirs < <(find $1 -maxdepth 1 -type d -print0)
             for file in ${files[@]}; do
-                mv --backup=numbered $file ~/.trash/
+                command mv --backup=numbered $file ~/.trash/
             done
             echo "Directories in \"$1\" has been moved to trash."
             echo "Type \"del --revert\" to revert it."

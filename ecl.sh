@@ -2,9 +2,9 @@
 
 ECL_install_dir="$HOME/.config/ecl.sh"
 
-source $ECL_install_dir/files/nav
+source $ECL_install_dir/files/dot
 source $ECL_install_dir/files/cp
-source $ECL_install_dir/files/rn
+source $ECL_install_dir/files/mv
 source $ECL_install_dir/files/mk
 source $ECL_install_dir/files/del
 source $ECL_install_dir/files/bkl

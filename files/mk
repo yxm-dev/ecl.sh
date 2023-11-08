@@ -1,7 +1,6 @@
 #! /bin/bash
 
-# "mk" function.
-## "mk -d" to make a dir. "mk -f" to make a file.
+# MK FUNCTION
     function mk(){
         if [[ "$1" == "-f" || "$1" == "--file" ]]; then
             if [[ -n "$2" ]]; then
@@ -11,19 +10,19 @@
                         path=${PWD##*/}
                     fi
                     name=${2##*/}
-                    echo "In the directory \"$path/\" there already exists a directory with name \"$name\"."
+                    echo "error: In the directory \"$path/\" there already exists a directory with name \"$name\"."
                 elif [[ -f "$2" ]]; then
                     path=${2%/*}
                     if [[ "$path" == "$2" ]]; then
                         path=${PWD##*/}
                     fi
                     name=${2##*/}
-                    echo "In the directory \"$path/\" there already exists a file with name \"$name\"."
+                    echo "error: In the directory \"$path/\" there already exists a file with name \"$name\"."
                 else
                      touch $2
                 fi
             else
-                echo "Please, enter a file name."
+                echo "erro: Please, enter a file name."
             fi
         elif [[ "$1" = "-d" || "$1" = "--dir" ]]; then
             if [[ -n "$2" ]]; then
@@ -33,19 +32,19 @@
                         path=${PWD##*/}
                     fi
                     name=${2##*/}
-                    echo "In the directory \"$path/\" there already exists a file with name \"$name\"."
+                    echo "error: In the directory \"$path/\" there already exists a file with name \"$name\"."
                 elif [[ -d "$2" ]]; then
                     path=${2%/*}
                     if [[ "$path" == "$2" ]]; then
                         path=${PWD##*/}
                     fi
                     name=${2##*/}
-                    echo "In the directory \"$path/\" there already exists a directory with name \"$name\"."
+                    echo "error: In the directory \"$path/\" there already exists a directory with name \"$name\"."
                 else
-                     mkdir $2
+                     mkdir -p $2
                 fi
             else
-                echo "Please, enter a directory name."
+                echo "error: Please, enter a directory name."
             fi
         elif [[ "$1" = "-l" || "$1" = "--link" ]]; then
             if [ -n $2 ] || [ -n $3 ]; then
@@ -60,7 +59,7 @@
         fi
     }
 
-## aliases
+# ALIASES
     alias mkf="mk -f"
     alias mkd="mk -d"
     alias mkl="mk -l"

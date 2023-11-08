@@ -2,7 +2,7 @@
 
 declare -A ECL_nav
 
-ECL_nav_text_editor="vim"
+ECL_editor_cmd="vim"
 
 ECL_nav[pdf]="zathura"
 ECL_nav[djvu]="zathura"
