@@ -1,5 +1,2 @@
 #! /bin/bash
 
-function cp(){
-    command cp -r $1 $2
-}
