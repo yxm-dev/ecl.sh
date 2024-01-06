@@ -2,7 +2,7 @@
 
 declare -A ECL_nav
 
-ECL_editor_cmd="vim"
+ECL_editor_cmd="vim -c \"syntax spell toplevel\""
 
 ECL_nav[pdf]="zathura"
 ECL_nav[djvu]="zathura"
